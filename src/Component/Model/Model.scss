@@ -1,0 +1,111 @@
+.model {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+
+  top: 0;
+  z-index: 10000;
+  left: 0;
+  .model_content {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    opacity: 1;
+    top: 20%;
+    left: 38%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20000;
+    box-shadow: 0 0 10px rgb(182, 182, 182);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+  }
+  .blur {
+    width: 100%;
+    height: 100%;
+    background-color: #c2bdbd;
+    opacity: 0.8;
+    button {
+      position: absolute;
+      right: 3%;
+      top: 3%;
+      border: none;
+      cursor: pointer;
+      background-color: transparent;
+      i {
+        color: white;
+        font-size: 40px;
+        font-weight: 400;
+      }
+    }
+  }
+  .form {
+    text-align: center;
+    margin: 10px;
+    // background-color: red;
+    h4 {
+      font-size: 24px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: start;
+      padding: 10px;
+      label {
+        margin: 10px 0;
+        font-size: 16px;
+      }
+      input {
+        width: 100%;
+        height: 30px;
+        border-radius: 30px;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        -ms-border-radius: 30px;
+        -o-border-radius: 30px;
+        padding: 0 20px;
+      }
+    }
+    button {
+      width: 90%;
+      padding: 10px 0;
+      margin-top: 100px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      -webkit-border-radius: 30px;
+      -moz-border-radius: 30px;
+      -ms-border-radius: 30px;
+      -o-border-radius: 30px;
+
+      cursor: pointer;
+    }
+  }
+  .dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    button {
+      width: 23rem;
+      height: 30px;
+      margin: 5px 0;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background-color: transparent;
+      &:hover {
+        // background-color: blue;
+        color: rgba(255, 94, 0, 0.877);
+      }
+    }
+  }
+}
