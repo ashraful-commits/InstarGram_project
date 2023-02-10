@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import swal from 'sweetalert';
 import Model from '../Model/Model';
 import './SideLeft.scss';
 function SideLeft() {
@@ -9,25 +10,75 @@ function SideLeft() {
     photo: '',
   });
 
-  const hendelInput = (e) => {
+  const [image, setImage] = useState();
+  const [preview, setPreview] = useState();
+
+  const hendelInput = async (e) => {
     setInput((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+    const allfile = e.target.files[0];
+    console.log(allfile);
+    const url = URL.createObjectURL(allfile);
+    console.log(url);
+    setImage(allfile);
+    setPreview(url);
   };
   const hendleModel = () => {
     setShow(true);
   };
-  const heldelOnSumit = (e) => {
+  const heldelOnSumit = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5050/post', input).then((res) => {
-      setInput({
-        para: '',
-        photo: '',
+
+    console.log(preview);
+    const data = new FormData();
+
+    data.append('file', image);
+
+    data.append('upload_preset', 'instagram');
+    await axios
+      .post(
+        'https://api.cloudinary.com/v1_1/ds9mljkgj/image/upload',
+        data
+      )
+      .then((res) => {
+        try {
+          const allData = {
+            ...input,
+            photo: res.data.secure_url,
+          };
+
+          // const strData = JSON.stringify(allData);
+
+          const jurl = 'http://localhost:5050/post';
+          axios
+            .post(jurl, allData)
+            .then((res) => {
+              setInput({
+                para: '',
+                photo: '',
+              });
+              setShow(false);
+            })
+            .catch((error) => {
+              console.log(error.message);
+            });
+          swal({
+            title: 'Post success!',
+            text: '',
+            icon: 'success',
+            button: 'ok',
+          });
+        } catch (error) {
+          console.log(error.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
-      setShow(false);
-    });
   };
+
   return (
     <>
       <div className="left_side">
@@ -53,7 +104,7 @@ function SideLeft() {
         <div className="menu">
           <ul>
             <li>
-              <a href="">
+              <a href="/">
                 <svg
                   aria-label="Home"
                   class="_ab6-"
@@ -70,7 +121,7 @@ function SideLeft() {
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/">
                 <svg
                   aria-label="Search"
                   class="_ab6-"
@@ -105,7 +156,7 @@ function SideLeft() {
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/">
                 <svg
                   aria-label="Explore"
                   class="_ab6-"
@@ -143,7 +194,7 @@ function SideLeft() {
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/">
                 <svg
                   aria-label="Reels"
                   class="_ab6-"
@@ -203,7 +254,7 @@ function SideLeft() {
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/">
                 <svg
                   aria-label="Direct"
                   class="_ab6-"
@@ -299,7 +350,7 @@ function SideLeft() {
               </button>
             </li>
             <li>
-              <a href="">
+              <a href="/">
                 <img
                   src="https://img.freepik.com/free-icon/html-seo-interface-symbol_318-55542.jpg"
                   alt=""
@@ -308,7 +359,7 @@ function SideLeft() {
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/">
                 <svg
                   aria-label="Settings"
                   class="_ab6-"
@@ -375,11 +426,19 @@ function SideLeft() {
               </div>
               <div className="field">
                 <label for="">Photo</label>
+                {preview === undefined && (
+                  <img
+                    src="https://www.diffuse.nl/images/cropped/110-820x767.jpg"
+                    alt=""
+                  />
+                )}
+                {preview && <img src={preview} alt="" />}
                 <input
                   name="photo"
                   value={input.photo}
                   onChange={hendelInput}
-                  type="text"
+                  type="file"
+                  multiple
                 />
               </div>
               <button type="submit">Post</button>

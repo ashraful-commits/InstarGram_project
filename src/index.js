@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.js';
 import './index.scss';
+
 import '../node_modules/boxicons/css/boxicons.min.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

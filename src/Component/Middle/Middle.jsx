@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Model from '../Model/Model';
+import swal from 'sweetalert';
+// import Model from '../Model/Model';
 import './Middle.scss';
 const Middle = () => {
   const [drop, setDrop] = useState(false);
@@ -11,10 +12,26 @@ const Middle = () => {
     });
   }, [post]);
   // delet
+  console.log(post);
   const hendelDelete = (id) => {
-    console.log(id);
-    // axios.delete(`http://localhost:5050/post/${id}`);
+    swal({
+      title: 'Are you sure?',
+      text: '',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal('Poof! Your  post has been deleted!', {
+          icon: 'success',
+        });
+        axios.delete(`http://localhost:5050/post/${id}`);
+      } else {
+        swal('Your post is safe!');
+      }
+    });
   };
+
   return (
     <div className="middle_content">
       <div className="users">
@@ -65,8 +82,13 @@ const Middle = () => {
         </div>
       </div>
       <div className="post_container">
-        {post.map((item, index) => (
-          <>
+        {post.length === 0 && (
+          <div className="post">
+            <h4 style={{ textAlign: 'center' }}>No post</h4>
+          </div>
+        )}
+        {post.length > 0 &&
+          post.map((item, index) => (
             <div key={index} className="post">
               <div className="post_user ">
                 <div className="profile">
@@ -78,8 +100,25 @@ const Middle = () => {
                     <p>ashraful10000</p>
                     <span>Md.Ashraful Alam</span>
                   </div>
-                  <button onClick={() => setDrop(true)}>
+                  <button
+                    onMouseEnter={() => setDrop(true)}
+                    onClick={() => setDrop(false)}
+                  >
                     <i class="bx bx-dots-horizontal-rounded"></i>
+                    {drop && (
+                      <div className="dropdown">
+                        <ul>
+                          <li>
+                            <button>Edit</button>
+                            <button
+                              onClick={() => hendelDelete(item.id)}
+                            >
+                              Detete
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </button>
                 </div>
               </div>
@@ -178,12 +217,7 @@ const Middle = () => {
                 </div>
                 <div className="comment_content">
                   <span>22 likes</span>
-                  <span>
-                    Lorem, ipsum dolor sit amet consectetur
-                    adipisicing elit. Aut eligendi obcaecati placeat
-                    officiis illum quae quo sint molestiae, mollitia
-                    error!
-                  </span>
+                  <span>{item.para}</span>
                   <a href="/">See translation</a>
                   <form action="">
                     <input
@@ -194,18 +228,7 @@ const Middle = () => {
                 </div>
               </div>
             </div>
-            {drop && (
-              <Model hide={setDrop}>
-                <div className="dropdown">
-                  <button>Edit</button>
-                  <button onClick={hendelDelete(item.id)}>
-                    Detete
-                  </button>
-                </div>
-              </Model>
-            )}
-          </>
-        ))}
+          ))}
       </div>
     </div>
   );
