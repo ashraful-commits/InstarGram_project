@@ -1,18 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
-// import Model from '../Model/Model';
+import Model from '../Model/Model';
 import './Middle.scss';
 const Middle = () => {
+  //all state here
   const [drop, setDrop] = useState(false);
   const [post, setPost] = useState([]);
+  // get all post  here
   useEffect(() => {
     axios.get('http://localhost:5050/post').then((res) => {
       setPost(res.data);
     });
-  }, [post]);
-  // delet
-  console.log(post);
+  }, []);
+  // delete
   const hendelDelete = (id) => {
     swal({
       title: 'Are you sure?',
@@ -26,12 +27,16 @@ const Middle = () => {
           icon: 'success',
         });
         axios.delete(`http://localhost:5050/post/${id}`);
+        setDrop(false);
+        setPost(post.filter((item) => item.id !== id));
       } else {
         swal('Your post is safe!');
       }
     });
   };
-
+  const handelCancel = () => {
+    setDrop(false);
+  };
   return (
     <div className="middle_content">
       <div className="users">
@@ -82,14 +87,44 @@ const Middle = () => {
         </div>
       </div>
       <div className="post_container">
+        {/* //==========================no post */}
         {post.length === 0 && (
           <div className="post">
             <h4 style={{ textAlign: 'center' }}>No post</h4>
           </div>
         )}
+        {/* =========all post */}
         {post.length > 0 &&
           post.map((item, index) => (
             <div key={index} className="post">
+              {/* // dropdown menu here edit delete */}
+              {drop && (
+                <Model hide={setDrop}>
+                  <div className="dropdown">
+                    <ul>
+                      <li>
+                        <button>Edit</button>
+                        <button onClick={() => hendelDelete(item.id)}>
+                          Detete
+                        </button>
+                        <button onClick={handelCancel}>Cancle</button>
+                      </li>
+                    </ul>
+                  </div>
+                </Model>
+                // <div className="dropdown">
+                //   <ul>
+                //     <li>
+                //       <button>Edit</button>
+                //       <button
+                //         onClick={() => hendelDelete(item.id)}
+                //       >
+                //         Detete
+                //       </button>
+                //     </li>
+                //   </ul>
+                // </div>
+              )}
               <div className="post_user ">
                 <div className="profile">
                   <img
@@ -105,20 +140,6 @@ const Middle = () => {
                     onClick={() => setDrop(false)}
                   >
                     <i class="bx bx-dots-horizontal-rounded"></i>
-                    {drop && (
-                      <div className="dropdown">
-                        <ul>
-                          <li>
-                            <button>Edit</button>
-                            <button
-                              onClick={() => hendelDelete(item.id)}
-                            >
-                              Detete
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
                   </button>
                 </div>
               </div>

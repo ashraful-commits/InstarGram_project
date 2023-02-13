@@ -9,10 +9,10 @@ function SideLeft() {
     para: '',
     photo: '',
   });
-
+  //================== all state
   const [image, setImage] = useState();
   const [preview, setPreview] = useState();
-
+  //===================== onchange input
   const hendelInput = async (e) => {
     setInput((prevState) => ({
       ...prevState,
@@ -28,6 +28,7 @@ function SideLeft() {
   const hendleModel = () => {
     setShow(true);
   };
+  //===================== form submite
   const heldelOnSumit = async (e) => {
     e.preventDefault();
 
@@ -37,6 +38,7 @@ function SideLeft() {
     data.append('file', image);
 
     data.append('upload_preset', 'instagram');
+    //======= coludinary post image
     await axios
       .post(
         'https://api.cloudinary.com/v1_1/ds9mljkgj/image/upload',
@@ -52,6 +54,8 @@ function SideLeft() {
           // const strData = JSON.stringify(allData);
 
           const jurl = 'http://localhost:5050/post';
+
+          //===================== data post on db json
           axios
             .post(jurl, allData)
             .then((res) => {
@@ -78,7 +82,7 @@ function SideLeft() {
         console.log(error.message);
       });
   };
-
+  //===================== return
   return (
     <>
       <div className="left_side">
@@ -410,6 +414,7 @@ function SideLeft() {
           </ul>
         </div>
       </div>
+      {/* ===model ====*/}
       {show && (
         <Model hide={setShow}>
           <div className="form">
@@ -426,12 +431,14 @@ function SideLeft() {
               </div>
               <div className="field">
                 <label for="">Photo</label>
+                {/*============= default img */}
                 {preview === undefined && (
                   <img
                     src="https://www.diffuse.nl/images/cropped/110-820x767.jpg"
                     alt=""
                   />
                 )}
+                {/* preview image */}
                 {preview && <img src={preview} alt="" />}
                 <input
                   name="photo"
