@@ -11,13 +11,29 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 3px;
+        padding: 5px;
+
+        position: relative;
         background: linear-gradient(
           120deg,
           rgba(131, 58, 180, 1) 0%,
           rgb(247, 58, 0) 50%,
           rgba(254, 254, 0, 0.925) 100%
         );
+        z-index: 1;
+        &::after {
+          content: '';
+          width: 93%;
+          height: 93%;
+          position: absolute;
+          z-index: -1;
+          background-color: #fff;
+          border-radius: 100%;
+          -webkit-border-radius: 100%;
+          -moz-border-radius: 100%;
+          -ms-border-radius: 100%;
+          -o-border-radius: 100%;
+        }
         border-radius: 100%;
         -webkit-border-radius: 100%;
         -moz-border-radius: 100%;
@@ -31,6 +47,7 @@
           -o-border-radius: 100%;
           width: 66px;
           height: 66px;
+          position: relative;
         }
       }
       span {

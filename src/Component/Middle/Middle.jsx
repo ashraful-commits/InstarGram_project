@@ -115,7 +115,7 @@ const Middle = () => {
                 // <div className="dropdown">
                 //   <ul>
                 //     <li>
-                //       <button>Edit</button>
+                //       <button>Edit</>
                 //       <button
                 //         onClick={() => hendelDelete(item.id)}
                 //       >
@@ -135,10 +135,7 @@ const Middle = () => {
                     <p>ashraful10000</p>
                     <span>Md.Ashraful Alam</span>
                   </div>
-                  <button
-                    onMouseEnter={() => setDrop(true)}
-                    onClick={() => setDrop(false)}
-                  >
+                  <button onClick={() => setDrop(true)}>
                     <i class="bx bx-dots-horizontal-rounded"></i>
                   </button>
                 </div>
@@ -238,7 +235,12 @@ const Middle = () => {
                 </div>
                 <div className="comment_content">
                   <span>22 likes</span>
-                  <span>{item.para}</span>
+                  <span>
+                    Lorem Ipsum is simply dummy text of the printing
+                    and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the
+                    1500s, when an unknown
+                  </span>
                   <a href="/">See translation</a>
                   <form action="">
                     <input

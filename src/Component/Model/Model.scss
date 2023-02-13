@@ -9,7 +9,7 @@
   .model_content {
     position: absolute;
     width: 400px;
-    height: 550px;
+    height: 450px;
 
     background-color: #fff;
     opacity: 1;
@@ -50,10 +50,12 @@
     margin: 10px;
     // background-color: red;
     h4 {
-      font-size: 24px;
+      font-size: 20px;
+      font-weight: normal;
     }
     .field {
       display: flex;
+
       flex-direction: column;
       justify-content: center;
       align-items: start;
@@ -61,6 +63,23 @@
       label {
         margin: 3px 0;
         font-size: 16px;
+
+        .prev {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 370px;
+          height: 300px;
+          p {
+            margin: 20px 0;
+          }
+          svg {
+            width: 100px;
+
+            height: 100px;
+          }
+        }
       }
 
       img {
