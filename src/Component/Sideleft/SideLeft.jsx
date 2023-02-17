@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import swal from 'sweetalert';
 import Model from '../Model/Model';
 import './SideLeft.scss';
+
 function SideLeft() {
   const [show, setShow] = useState(false);
   const [input, setInput] = useState({
@@ -10,8 +11,10 @@ function SideLeft() {
     photo: '',
   });
   //================== all state
-  const [image, setImage] = useState();
-  const [preview, setPreview] = useState();
+  const [image, setImage] = useState(undefined);
+  const [preview, setPreview] = useState(undefined);
+  //============================================ all post
+ 
   //===================== onchange input
   const hendelInput = async (e) => {
     setInput((prevState) => ({
@@ -31,62 +34,80 @@ function SideLeft() {
   //===================== form submite
   const heldelOnSumit = async (e) => {
     e.preventDefault();
-
-    console.log(preview);
-    const data = new FormData();
-
-    data.append('file', image);
-
-    data.append('upload_preset', 'instagram');
-    //======= coludinary post image
-    await axios
-      .post(
-        'https://api.cloudinary.com/v1_1/ds9mljkgj/image/upload',
-        data
-      )
-      .then((res) => {
-        try {
-          const allData = {
-            ...input,
-            photo: res.data.secure_url,
-          };
-
-          // const strData = JSON.stringify(allData);
-
-          const jurl = 'http://localhost:5050/post';
-
-          //===================== data post on db json
-          axios
-            .post(jurl, allData)
-            .then((res) => {
-              setInput({
-                para: '',
-                photo: '',
-              });
-              setShow(false);
-            })
-            .catch((error) => {
-              console.log(error.message);
-            });
-          swal({
-            title: 'Post success!',
-            text: '',
-            icon: 'success',
-            button: 'ok',
-          });
-        } catch (error) {
-          console.log(error.message);
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
+    if (image === undefined) {
+      swal({
+        title: 'Please Select a photo or video!',
+        text: '',
+        icon: 'warning',
+        button: 'ok',
       });
+    } else {
+      console.log(preview);
+      const data = new FormData();
+
+      data.append('file', image);
+
+      data.append('upload_preset', 'instagram');
+      //======= coludinary post image
+      await axios
+        .post(
+          'https://api.cloudinary.com/v1_1/ds9mljkgj/image/upload',
+          data
+        )
+        .then((res) => {
+          try {
+            const allData = {
+              ...input,
+              photo: res.data.secure_url,
+            };
+
+            // const strData = JSON.stringify(allData);
+
+            const jurl = 'http://localhost:5050/post';
+
+            //===================== data post on db json
+            axios
+              .post(jurl, allData)
+              .then((res) => {
+                setInput({
+                  para: '',
+                  photo: '',
+                });
+                 setPreview(undefined);
+              setImage(undefined);
+                setShow(false);
+          
+             
+              })
+              .catch((error) => {
+                console.log(error.message);
+              });
+            swal({
+              title: 'Post success!',
+              text: '',
+              icon: 'success',
+              button: 'ok',
+            });
+          } catch (error) {
+            console.log(error.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+  };
+  //=============================clearimg
+  const handelClearImg = () => {
+    setPreview(undefined);
+    setImage(undefined);
   };
   //===================== return
   return (
     <>
       <div className="left_side">
         <div className="log">
+          
           <svg
             aria-label="Instagram"
             class="_ab6-"
@@ -465,6 +486,14 @@ function SideLeft() {
                 )}
                 {/* preview image */}
                 {preview && <img src={preview} alt="" />}
+                {preview && (
+                  <button
+                    onClick={handelClearImg}
+                    className="clear_img"
+                  >
+                    <i class="bx bx-x"></i>
+                  </button>
+                )}
                 <input
                   style={{ display: 'none' }}
                   id="PhotoPrev"
@@ -477,6 +506,7 @@ function SideLeft() {
               </div>
               {preview && <button type="submit">Post</button>}
             </form>
+            
           </div>
         </Model>
       )}

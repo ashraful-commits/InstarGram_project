@@ -1,5 +1,4 @@
 import React from 'react';
-import Counter from '../Counter/Counter';
 
 import Middle from '../Middle/Middle';
 import SideLeft from '../Sideleft/SideLeft';
@@ -19,8 +18,6 @@ function Main() {
           <SideRight />
         </div>
       </div>
-
-      <Counter />
     </>
   );
 }
